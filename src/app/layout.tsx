@@ -1,7 +1,8 @@
-import "./globals.css";
 import '@mantine/core/styles.css';
+import "./globals.css";
 import Providers from "@/providers";
 import type { Metadata } from "next";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 
 export const metadata: Metadata = {
@@ -37,7 +38,9 @@ export default function RootLayout({
 
       <body>
         <Providers>
-          {children}
+          <DashboardLayout>
+            {children}
+          </DashboardLayout>
         </Providers>
       </body>
     </html>
