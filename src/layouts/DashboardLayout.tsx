@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import SideNav from "@/components/nav/SideNav";
 import { SideNavDrawer } from "@/components/nav/SideNavDrawer";
+import SearchBar from "@/components/topBar/SearchBar";
 
 interface Props { children: React.ReactNode }
 
@@ -51,8 +52,12 @@ export default function DashboardLayout({ children }: Props) {
           />
         )}
 
-        <div className="pb-20 px-4 sm:px-8">
-          {children}
+        <div className="pb-20">
+          <SearchBar />
+          
+          <div className="px-4 sm:px-8">
+            {children}
+          </div>
         </div>
       </div>
     </React.Fragment>
