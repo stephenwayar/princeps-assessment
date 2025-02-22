@@ -3,6 +3,7 @@ import '@mantine/dates/styles.css';
 import "./globals.css";
 import Providers from "@/providers";
 import type { Metadata } from "next";
+import { Toaster } from 'react-hot-toast';
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 
@@ -40,6 +41,10 @@ export default function RootLayout({
       <body>
         <Providers>
           <DashboardLayout>
+            <Toaster
+              position="bottom-center"
+              reverseOrder={false}
+            />
             {children}
           </DashboardLayout>
         </Providers>
