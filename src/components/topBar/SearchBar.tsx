@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 
 export default function SearchBar() {
   return (
-    <div className="border-b-2 border-[#EDEDEF] px-4 sm:px-8 h-[64px] flex items-center lg:justify-between justify-end space-x-20">
+    <div className="border-b-2 border-[#EDEDEF] px-4 sm:px-8 h-[64px] flex items-center lg:justify-between justify-end space-x-20 sticky top-0 z-10 bg-white">
       <div className="hidden lg:block lg:w-full">
         <div className="flex items-center justify-nd w-full">
           <SearchInput />
