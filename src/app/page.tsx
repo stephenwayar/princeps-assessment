@@ -2,7 +2,7 @@ import { API_URL } from "@/config/env";
 import StatsBar from "@/components/customer/StatsBar";
 import CustomersTable from "@/components/customer/CustomersTable";
 import NewCustomerBar from "@/components/customer/NewCustomerBar";
-import { CustomerApiResponse, ICustomer } from "@/services/types/customer.types";
+import { CustomerApiResponse } from "@/services/types/customer.types";
 
 async function getCustomers(): Promise<CustomerApiResponse> {
   const res = await fetch(`${API_URL}/customers?page_size=10`, {
@@ -24,9 +24,9 @@ export default async function Home() {
       <NewCustomerBar />
 
       <StatsBar
-        activeCount={`-`}
-        overDueCount={`-`}
-        inactiveCount={`-`}
+        activeCount='-' // N/A for display
+        overDueCount='-'  // N/A for display
+        inactiveCount='-'  // N/A for display
         totalCount={customers.data.pagination.total || 0}
       />
 
