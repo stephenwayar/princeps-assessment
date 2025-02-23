@@ -24,7 +24,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
             {error.message}
           </h1>
 
-          <p className="text-[#44444B] max-w-md">
+          <p className="text-[#44444B] text-center max-w-md">
             We apologize for the inconvenience, an error occurred. Try resetting...
           </p>
         </div>

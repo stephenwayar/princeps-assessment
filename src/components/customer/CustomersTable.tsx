@@ -1,10 +1,10 @@
 "use client"
 import { useEffect, useState } from "react";
-import Pagination from "../common/Pagination";
 import NoData from "../common/NoData";
 import SearchTable from "./SearchTable";
 import FilterButton from "./FIlterButton";
 import CustomerCard from "./CustomerCard";
+import Pagination from "../common/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useDebouncedValue } from "@mantine/hooks";
 import EditColumnsButton from "./EditColumnsButton";
@@ -73,10 +73,10 @@ export default function CustomersTable({ initialData }: Props) {
     }
   };
 
-  const handleColumnToggle = (columnId: keyof typeof visibleColumns) => {
+  const handleColumnToggle = (columnId: string) => {
     setVisibleColumns(prev => ({
       ...prev,
-      [columnId]: !prev[columnId]
+      [columnId]: !prev[columnId as keyof typeof visibleColumns]
     }));
   };
 
@@ -97,7 +97,8 @@ export default function CustomersTable({ initialData }: Props) {
               />
 
               <EditColumnsButton
-
+                visibleColumns={visibleColumns}
+                onToggleColumn={handleColumnToggle}
               />
 
               <div>
