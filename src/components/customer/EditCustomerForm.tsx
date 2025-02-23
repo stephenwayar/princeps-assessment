@@ -2,16 +2,19 @@ import { AxiosError } from "axios";
 import { DateInput } from "@mantine/dates"
 import { Input, Loader } from "@mantine/core"
 import { UseFormReturnType } from "@mantine/form"
-import { CustomerFormValues } from "./NewCustomerBar"
 import { UseMutationResult } from "@tanstack/react-query";
+import { EditCustomerFormValues } from "./CustomerCard";
 
 interface Props {
-  handleSubmit: (values: CustomerFormValues) => void;
-  mutation: UseMutationResult<any, AxiosError<unknown, any>, CustomerFormValues, unknown>;
-  form: UseFormReturnType<CustomerFormValues, (values: CustomerFormValues) => CustomerFormValues>;
+  handleSubmit: (values: EditCustomerFormValues) => void;
+  mutation: UseMutationResult<any, AxiosError<{
+    errors: Record<string, string[]>;
+    message: string;
+  }, any>, EditCustomerFormValues, unknown>;
+  form: UseFormReturnType<EditCustomerFormValues, (values: EditCustomerFormValues) => EditCustomerFormValues>
 }
 
-export default function AddCustomerForm({ form, handleSubmit, mutation }: Props) {
+export default function EditCustomerForm({ form, handleSubmit, mutation }: Props) {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
@@ -207,6 +210,36 @@ export default function AddCustomerForm({ form, handleSubmit, mutation }: Props)
         />
       </Input.Wrapper>
 
+      <div className="grid grid-cols-2 gap-4">
+        <Input.Wrapper
+          label="Workplace Name"
+          error={form.errors.workplace_name}
+          labelProps={{
+            style: { color: '#44444B' }
+          }}
+        >
+          <Input
+            placeholder="Enter workplace name"
+            disabled={mutation.isPending}
+            {...form.getInputProps('workplace_name')}
+          />
+        </Input.Wrapper>
+
+        <Input.Wrapper
+          label="Workplace Address"
+          error={form.errors.workplace_address}
+          labelProps={{
+            style: { color: '#44444B' }
+          }}
+        >
+          <Input
+            placeholder="Enter workplace address"
+            disabled={mutation.isPending}
+            {...form.getInputProps('workplace_address')}
+          />
+        </Input.Wrapper>
+      </div>
+
       <div className="grid grid-cols-3 gap-4">
         <Input.Wrapper
           label="ID Card"
@@ -252,14 +285,14 @@ export default function AddCustomerForm({ form, handleSubmit, mutation }: Props)
       </div>
 
       <div className="flex justify-center mt-6">
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={mutation.isPending}
           className="bg-[#0053A6] space-x-2 w-full disabled:opacity-50 text-white rounded-[6px] flex items-center justify-center h-[40px] border shadow border-[#13497f]"
         >
           {mutation.isPending ?
             <Loader color="white" size="xs" /> :
-            'Create Customer'
+            'Save Changes'
           }
         </button>
       </div>

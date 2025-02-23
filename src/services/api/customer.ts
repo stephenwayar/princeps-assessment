@@ -1,8 +1,7 @@
-import { http } from "@/config/axios";
-import { EditCustomerData } from "../types/customer.types";
-import { CustomerFormValues } from "@/components/customer/NewCustomerBar";
+import { http, httpNoAuth } from "@/config/axios";
+import { AddCustomerDate, EditCustomerData } from "../types/customer.types";
 
-export const createCustomer = async (payload: CustomerFormValues) => {
+export const createCustomer = async (payload: AddCustomerDate) => {
   const url = '/customers'
   const res = await http.post(url, payload);
 
@@ -15,3 +14,10 @@ export const editCustomer = async (customerId: string, payload: EditCustomerData
 
   return res.data;
 };
+
+export const getCustomers = async <T>(page: number, searchText?: string, ): Promise<T> => {
+  const url = `/customers?search_text=${searchText}&page=${page}&page_size=10`
+  const res = await httpNoAuth.get(url);
+
+  return res.data as T;
+}

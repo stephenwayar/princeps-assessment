@@ -48,11 +48,12 @@ export default function NewCustomerBar() {
       lastname: '',
       bankcode: '',
       telephone: '',
-      company_id: '',
       voters_card: '',
       accountnumber: '',
       drivers_licence: '',
       residential_address: '',
+      // Hard coded value
+      company_id: '3a6f78ab-81b7-438e-a42b-fa28f7b388f9', 
     },
     validate: {
       bvn: (value) => (!value ? 'BVN is required' : null),
@@ -61,7 +62,6 @@ export default function NewCustomerBar() {
       bankcode: (value) => (!value ? 'Bank code is required' : null),
       lastname: (value) => (!value ? 'Last name is required' : null),
       firstname: (value) => (!value ? 'First name is required' : null),
-      company_id: (value) => (!value ? 'Company ID is required' : null),
       telephone: (value) => (!value ? 'Phone number is required' : null),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
       residential_address: (value) => (!value ? 'Address is required' : null),
@@ -73,16 +73,23 @@ export default function NewCustomerBar() {
     // Create new customer with form data
     mutationFn: (payload: CustomerFormValues) => createCustomer(payload),
 
-    onError: (_error: AxiosError) => {
-      toast.error(`Failed to add ${form.values.firstname} ${form.values.lastname}`)
+    onError: (error: AxiosError<{ errors: Record<string, string[]>, message: string }>) => {
+      if (error.response?.data?.errors) {
+        const apiErrors = error.response.data.errors;
+
+        // Set form errors for other fields
+        Object.entries(apiErrors).forEach(([field, messages]) => {
+          form.setFieldError(field, messages[0]);
+        });
+      }
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.error(`Successfuly added ${form.values.firstname} ${form.values.lastname}!`)
 
       // Invalidate 'customers' to refresh cached data
       queryClient.invalidateQueries({
-        queryKey: ['customers']
+        queryKey: ['customers', 1, ''] 
       })
     },
   })
@@ -106,7 +113,7 @@ export default function NewCustomerBar() {
 
         <div>
           <button onClick={open} className="bg-[#0053A6] space-x-2 flex items-center w-full text-white rounded-[6px] h-[36px] border shadow border-[#13497f]">
-            <div className="w-[36px] h-full flex items-center justify-end">
+            <div className="w-[36px] h-full flex justify-center items-center lg:justify-end">
               <Icon
                 width="19"
                 height="19"
@@ -115,11 +122,11 @@ export default function NewCustomerBar() {
               />
             </div>
 
-            <p>
+            <p className="hidden lg:block">
               Add new customer
             </p>
 
-            <div className="border-l-2 border-[#13497f] w-[36px] h-full flex items-center justify-center">
+            <div className="border-l-2 border-[#13497f] hidden lg:block w-[36px] h-full lg:flex lg:items-center justify-center">
               <Icon
                 width="19"
                 height="19"
