@@ -9,27 +9,49 @@ interface Props { children: React.ReactNode }
 
 export default function DashboardLayout({ children }: Props) {
   const startX = useRef(0);
+  const startY = useRef(0);
+  const isTracking = useRef(false);
   const [opened, { open, close }] = useDisclosure(false);
 
   useEffect(() => {
     const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches[0].clientX < 30) { // Detect touch near the left edge (30px)
+      if (e.touches[0].clientX < 30) { // Only start tracking near left edge
         startX.current = e.touches[0].clientX;
+        startY.current = e.touches[0].clientY;
+        isTracking.current = true;
       }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (startX.current < 30 && e.touches[0].clientX - startX.current > 50) {
-        open(); // Open drawer when swiped right
+      if (!isTracking.current) return;
+
+      const deltaX = e.touches[0].clientX - startX.current;
+      const deltaY = e.touches[0].clientY - startY.current;
+
+      // Check if horizontal swipe (more horizontal than vertical movement)
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 50) { // Minimum swipe distance
+          open();
+          isTracking.current = false; // Reset tracking
+        }
+      } else {
+        // If more vertical movement, stop tracking as it's likely a scroll
+        isTracking.current = false;
       }
+    };
+
+    const handleTouchEnd = () => {
+      isTracking.current = false;
     };
 
     document.addEventListener('touchstart', handleTouchStart);
     document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
     };
   }, [open]);
 
