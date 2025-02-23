@@ -43,7 +43,7 @@
 ## Environment Setup
 
 ```env
-# Add your environment variables here as specified in the provided .env file:
+# Add your environment variables as specified in the provided .env file:
 
 API_URL = 
 
