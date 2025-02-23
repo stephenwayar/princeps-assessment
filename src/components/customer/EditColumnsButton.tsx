@@ -74,9 +74,19 @@ export default function EditColumnsButton({ visibleColumns, onToggleColumn }: Ed
         </Popover.Target>
 
         <Popover.Dropdown className="!p-0 space-y-2">
-          <div className="text-sm pt-3 space-y-2">
+          <div className="text-sm text-[#121212] px-4 pt-3 flex items-center justify-between">
+            <p>Edit columns</p>
+
+            <button onClick={() => {
+              setOpened(false);
+            }}>
+              x
+            </button>
+          </div>
+
+          <div className="text-sm pt-2 space-y-2">
             <p className="text-[#5E5F6E] px-4">
-              FIXED COLUMN
+              FIXED COLUMNS
             </p>
 
             <div className="px-4 py-3 border-b border-[#ECF0F3] bg-[#f2f6fb]">
@@ -93,14 +103,14 @@ export default function EditColumnsButton({ visibleColumns, onToggleColumn }: Ed
 
             <div className="space-y-1">
               {Object.entries(tempColumns).slice(1).map(([columnId, isVisible]) => (
-                <div key={columnId} className="border-[#ECF0F3] border-b bg-[#f2f6fb] px-4 py-3">
+                <div key={columnId} className={`border-[#ECF0F3] border-b ${isVisible && 'bg-[#f2f6fb]'} px-4 py-3`}>
                   <Checkbox
                     size="sm"
                     color="#0053A6"
                     checked={isVisible}
                     onChange={() => handleTempToggle(columnId)}
                     label={
-                      <p className="text-[#0053A6]">
+                      <p className={`${isVisible ? 'text-[#0053A6]' : 'text-[#44444B]'}`}>
                         {columnLabels[columnId as keyof typeof columnLabels]}
                       </p>
                     }

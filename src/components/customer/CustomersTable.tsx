@@ -41,7 +41,6 @@ export default function CustomersTable({ initialData }: Props) {
 
   useEffect(() => {
     if (customers.data) {
-      console.log(customers.data)
       setFilteredCustomers(customers.data.data.data)
     }
   }, [customers.data])
@@ -93,7 +92,8 @@ export default function CustomersTable({ initialData }: Props) {
 
             <div className="flex items-center space-x-3">
               <FilterButton
-
+                customersData={customers.data.data.data}
+                setFilteredCustomers={setFilteredCustomers}
               />
 
               <EditColumnsButton
